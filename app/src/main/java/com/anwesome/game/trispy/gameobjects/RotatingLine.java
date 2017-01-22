@@ -38,7 +38,12 @@ public class RotatingLine {
         canvas.translate(x,y);
         canvas.rotate(rot);
         canvas.drawCircle(0,0,r,paint);
-        canvas.drawLine(r,0,x1,0,paint);
+        for(int i=0;i<4;i++) {
+            canvas.save();
+            canvas.rotate(90*i);
+            canvas.drawLine(r, 0, x1, 0, paint);
+            canvas.restore();
+        }
         canvas.restore();
         rot+=speed;
         rot%=360;
