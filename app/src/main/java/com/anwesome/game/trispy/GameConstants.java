@@ -11,5 +11,5 @@ public class GameConstants {
     public static final int RING_RADIUS_SCALE = 20;
     public static final int STROKE_SIZE = 20;
     public static final int LINE_SCALE = 3;
-    public static final int[] colors = {Color.parseColor("#009688"),Color.parseColor("#2196F3"),Color.parseColor("#FF5722"),Color.parseColor("#e53935"),Color.parseColor("#4CAF50"),Color.parseColor("#9C27B0")};
+    public static final int[] colors = {Color.parseColor("#2196F3"),Color.parseColor("#f44336"),Color.parseColor("#69F0AE"),Color.parseColor("#4A148C")};
 }

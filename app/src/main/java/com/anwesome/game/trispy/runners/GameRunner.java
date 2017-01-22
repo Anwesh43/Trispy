@@ -28,7 +28,7 @@ public class GameRunner implements Runnable{
                 if(time == 0){
                     w = canvas.getWidth();
                     h = canvas.getHeight();
-                    rings = GameCreateUtil.createRings(level);
+                    rings = GameCreateUtil.createRings();
                     rotatingLine = RotatingLine.newInstance();
                 }
                 canvas.drawColor(Color.WHITE);

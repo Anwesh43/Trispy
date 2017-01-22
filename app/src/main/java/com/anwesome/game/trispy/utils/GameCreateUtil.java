@@ -10,8 +10,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Created by anweshmishra on 22/01/17.
  */
 public class GameCreateUtil {
-    public static ConcurrentLinkedQueue<Ring> createRings(int level) {
-        int numberOfBalls = level+1;
+    public static ConcurrentLinkedQueue<Ring> createRings() {
+        int numberOfBalls = 4;
         ConcurrentLinkedQueue<Ring> rings = new ConcurrentLinkedQueue<>();
         int gap = 360/numberOfBalls,startDeg =0;
         Map<Integer,Ring> ringMap = new HashMap<>();
