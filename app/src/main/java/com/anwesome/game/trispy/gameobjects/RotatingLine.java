@@ -4,7 +4,7 @@ import android.graphics.*;
 import com.anwesome.game.trispy.GameConstants;
 
 public class RotatingLine {
-    private float rot = 0,maxSpeed = 30,speed = 0;
+    private float rot = 0,maxSpeed = 15,speed = 0;
     private RotatingLine() {
 
     }
