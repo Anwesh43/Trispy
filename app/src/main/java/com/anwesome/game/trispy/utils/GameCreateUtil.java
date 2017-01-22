@@ -1,7 +1,9 @@
 package com.anwesome.game.trispy.utils;
 
 import com.anwesome.game.trispy.GameConstants;
+import com.anwesome.game.trispy.gameobjects.MovingBall;
 import com.anwesome.game.trispy.gameobjects.Ring;
+import com.anwesome.game.trispy.gameobjects.RotatingLine;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -24,6 +26,14 @@ public class GameCreateUtil {
         }
         return rings;
     }
+    public static MovingBall createBall(float deg,int canvasWidth) {
+        Random random = new Random();
+        int colorIndex = random.nextInt(GameConstants.colors.length);
+        int color = GameConstants.colors[colorIndex];
+        MovingBall movingBall = MovingBall.newInstance(0,deg,color);
+        movingBall.setEdge(2*canvasWidth/GameConstants.RING_RADIUS_SCALE+canvasWidth/GameConstants.LINE_SCALE);
+        return movingBall;
+    }
     private static int getRandomIndex(Map<Integer,Ring> ringMap) {
         Random random = new Random();
         int index = random.nextInt(GameConstants.colors.length);
@@ -31,5 +41,15 @@ public class GameCreateUtil {
             return getRandomIndex(ringMap);
         }
         return index;
+    }
+    public static void createMovingBallForLevel(int time, int level, int w,RotatingLine rotatingLine,ConcurrentLinkedQueue<MovingBall> balls) {
+        if((time)%(30-level*4) == 0) {
+            Random random = new Random();
+            int rotIndex = random.nextInt(4);
+            float rot = rotatingLine.getRot()+rotIndex*90;
+            rot%=360;
+            balls.add(createBall(rot,w));
+
+        }
     }
 }
