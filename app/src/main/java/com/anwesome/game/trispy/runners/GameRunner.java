@@ -32,7 +32,7 @@ public class GameRunner implements Runnable{
                     rotatingLine = RotatingLine.newInstance();
                 }
                 canvas.drawColor(Color.WHITE);
-                canvas.drawColor(Color.parseColor("#99263238"));
+                canvas.drawColor(Color.parseColor("#263238"));
                 rotatingLine.draw(canvas,paint);
                 for(Ring ring:rings) {
                     ring.draw(canvas,paint);
