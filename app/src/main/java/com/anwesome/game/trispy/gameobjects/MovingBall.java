@@ -31,6 +31,8 @@ public class MovingBall {
         canvas.rotate(deg);
         canvas.drawCircle(x,0,canvas.getWidth()/GameConstants.RING_RADIUS_SCALE,paint);
         canvas.restore();
+    }
+    public void move() {
         x+=xSpeed;
         deg+=rotSpeed;
         deg%=360;

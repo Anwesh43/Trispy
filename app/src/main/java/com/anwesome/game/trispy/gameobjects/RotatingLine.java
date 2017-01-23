@@ -45,6 +45,8 @@ public class RotatingLine {
             canvas.restore();
         }
         canvas.restore();
+    }
+    public void move() {
         rot+=speed;
         rot%=360;
     }

@@ -39,10 +39,11 @@ public class GameRunner implements Runnable{
                 }
                 canvas.drawColor(GameConstants.BACK_COLOR);
                 rotatingLine.draw(canvas,paint);
+                rotatingLine.move();
                 for(MovingBall movingBall:balls) {
                     movingBall.setRotSpeed(rotatingLine.getSpeed());
                     movingBall.draw(canvas,paint);
-
+                    movingBall.move();
                 }
                 for(Ring ring:rings) {
                     ring.draw(canvas,paint);
