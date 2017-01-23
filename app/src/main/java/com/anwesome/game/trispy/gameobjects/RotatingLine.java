@@ -4,11 +4,20 @@ import android.graphics.*;
 import com.anwesome.game.trispy.GameConstants;
 
 public class RotatingLine {
-    private float rot = 0,maxSpeed = GameConstants.ROTATING_SPEED,speed = 0;
+    private float rot = 270,maxSpeed = GameConstants.ROTATING_SPEED,speed = 0;
+    private int lines = 4,radiusScale = GameConstants.RING_RADIUS_SCALE,lineScale = GameConstants.LINE_SCALE;
     private RotatingLine() {
 
     }
-    public static RotatingLine newInstance() {
+    private RotatingLine(int lines,int radiusScale,int lineScale) {
+        this.lines = lines;
+        this.radiusScale = radiusScale;
+        this.lineScale = lineScale;
+    }
+    public static RotatingLine newInstance(int... arguments) {
+        if(arguments.length == 3) {
+            return new RotatingLine(arguments[0],arguments[1],arguments[2]);
+        }
         return new RotatingLine();
     }
     public void setMaxSpeed(float maxSpeed) {
@@ -33,12 +42,12 @@ public class RotatingLine {
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(GameConstants.ROTATING_LINE_COLOR);
         paint.setStrokeWidth(GameConstants.STROKE_SIZE);
-        int x = canvas.getWidth()/2,y = canvas.getHeight()/2,r = canvas.getWidth()/GameConstants.RING_RADIUS_SCALE,x1 = r+canvas.getWidth()/GameConstants.LINE_SCALE;
+        int x = canvas.getWidth()/2,y = canvas.getHeight()/2,r = canvas.getWidth()/radiusScale,x1 = r+canvas.getWidth()/lineScale;
         canvas.save();
         canvas.translate(x,y);
         canvas.rotate(rot);
         canvas.drawCircle(0,0,r,paint);
-        for(int i=0;i<4;i++) {
+        for(int i=0;i<lines;i++) {
             canvas.save();
             canvas.rotate(90*i);
             canvas.drawLine(r, 0, x1, 0, paint);
