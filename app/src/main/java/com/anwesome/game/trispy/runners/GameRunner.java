@@ -7,6 +7,8 @@ import com.anwesome.game.trispy.gameobjects.MovingBall;
 import com.anwesome.game.trispy.gameobjects.Ring;
 import com.anwesome.game.trispy.gameobjects.RotatingLine;
 import com.anwesome.game.trispy.utils.GameCreateUtil;
+import com.anwesome.game.trispy.utils.GameStateHandler;
+import com.anwesome.game.trispy.utils.GameStateIndicator;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -24,6 +26,8 @@ public class GameRunner implements Runnable{
     private RotatingLine rotatingLine;
     private SurfaceHolder surfaceHolder;
     private MovingBall currentBall;
+    private GameStateHandler gameStateHandler;
+    private GameStateIndicator gameStateIndicator;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     public void run() {
         while(isRunning) {
@@ -35,6 +39,8 @@ public class GameRunner implements Runnable{
                     rings = GameCreateUtil.createRings();
                     rotatingLine = RotatingLine.newInstance();
                     currentBall = GameCreateUtil.createBall(0,w);
+                    gameStateHandler = GameStateHandler.newInstance();
+                    gameStateIndicator = GameStateIndicator.newInstance(canvas,gameStateHandler);
                     balls.add(currentBall);
                 }
                 canvas.drawColor(GameConstants.BACK_COLOR);
@@ -49,20 +55,23 @@ public class GameRunner implements Runnable{
                     ring.draw(canvas,paint);
                     if(rotatingLine.getRot() == ring.getDeg()) {
                         rotatingLine.setSpeed(0);
-                        float currentBallDeg = currentBall.getDeg();
-                        int ringColorIndexForCurrentBall = (int)(currentBallDeg/90);
-                        currentRingColor = checkForRingColor(ringColorIndexForCurrentBall);
+                        if(currentBall!=null) {
+                            float currentBallDeg = currentBall.getDeg();
+                            int ringColorIndexForCurrentBall = (int) (currentBallDeg / 90);
+                            currentRingColor = checkForRingColor(ringColorIndexForCurrentBall);
+                        }
                     }
                 }
                 if(currentBall!=null && currentBall.isAtEdge()) {
                     if (currentRingColor == currentBall.getColor()) {
                         balls.remove(currentBall);
+                        gameStateHandler.addScore();
+                        if(gameStateHandler.getScore()%5 == 0) {
+                            level++;
+                        }
                         //Code to set first ball of the collection as currentBall
                         if(balls.size()>0) {
-                            for(MovingBall ball:balls) {
-                                currentBall = ball;
-                                break;
-                            }
+                            setFirstBallAsCurrent();
                         }
                         else {
                             currentBall = null;
@@ -70,11 +79,17 @@ public class GameRunner implements Runnable{
                     }
 
                     else {
+                        gameStateHandler.showOver();
                         isRunning = false;
                     }
                 }
                 currentRingColor = 0;
+                gameStateIndicator.drawScore(paint);
+                gameStateIndicator.drawOver(paint);
                 surfaceHolder.unlockCanvasAndPost(canvas);
+                if(balls.size()>0 && currentBall == null) {
+                    setFirstBallAsCurrent();
+                }
                 time++;
                 GameCreateUtil.createMovingBallForLevel(time,level,w,rotatingLine,balls);
             }
@@ -84,6 +99,12 @@ public class GameRunner implements Runnable{
             catch(Exception ex) {
 
             }
+        }
+    }
+    private void setFirstBallAsCurrent() {
+        for(MovingBall ball:balls) {
+            currentBall = ball;
+            break;
         }
     }
     private int checkForRingColor(int index) {
