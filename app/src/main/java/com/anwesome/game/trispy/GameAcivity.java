@@ -30,5 +30,8 @@ public class GameAcivity extends AppCompatActivity{
         super.onResume();
         gameView.resume();
     }
+    public void onBackPressed() {
+
+    }
 }
 
