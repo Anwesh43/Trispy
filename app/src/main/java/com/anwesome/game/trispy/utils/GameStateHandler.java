@@ -29,11 +29,6 @@ public class GameStateHandler {
             showScore = false;
         }
     }
-    public void end() {
-        if(!isRunning) {
-            isRunning = true;
-        }
-    }
     public void pause() {
         if(isRunning) {
             isRunning = false;

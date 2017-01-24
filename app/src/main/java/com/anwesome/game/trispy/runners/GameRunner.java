@@ -3,6 +3,7 @@ package com.anwesome.game.trispy.runners;
 import android.graphics.*;
 import android.view.*;
 import com.anwesome.game.trispy.GameConstants;
+import com.anwesome.game.trispy.gameobjects.MenuBall;
 import com.anwesome.game.trispy.gameobjects.MovingBall;
 import com.anwesome.game.trispy.gameobjects.Ring;
 import com.anwesome.game.trispy.gameobjects.RotatingLine;
@@ -17,6 +18,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class GameRunner implements Runnable{
     private boolean isRunning = false;
+    private MenuBall.NavigationHandler navigationHandler;
+
+    public MenuBall.NavigationHandler getNavigationHandler() {
+        return navigationHandler;
+    }
+
+    public void setNavigationHandler(MenuBall.NavigationHandler navigationHandler) {
+        this.navigationHandler = navigationHandler;
+    }
+
     private int time = 0;
     private int level = 1;
     private int w,h;
@@ -45,11 +56,15 @@ public class GameRunner implements Runnable{
                 }
                 canvas.drawColor(GameConstants.BACK_COLOR);
                 rotatingLine.draw(canvas,paint);
-                rotatingLine.move();
+                if(gameStateHandler.shouldRender()) {
+                    rotatingLine.move();
+                }
                 for(MovingBall movingBall:balls) {
                     movingBall.setRotSpeed(rotatingLine.getSpeed());
                     movingBall.draw(canvas,paint);
-                    movingBall.move();
+                    if(gameStateHandler.shouldRender()) {
+                        movingBall.move();
+                    }
                 }
                 for(Ring ring:rings) {
                     ring.draw(canvas,paint);
@@ -80,7 +95,7 @@ public class GameRunner implements Runnable{
 
                     else {
                         gameStateHandler.showOver();
-                        isRunning = false;
+                        gameStateHandler.pause();
                     }
                 }
                 currentRingColor = 0;
@@ -91,7 +106,12 @@ public class GameRunner implements Runnable{
                     setFirstBallAsCurrent();
                 }
                 time++;
-                GameCreateUtil.createMovingBallForLevel(time,level,w,rotatingLine,balls);
+                if(gameStateHandler.shouldRender()) {
+                    GameCreateUtil.createMovingBallForLevel(time, level, w, rotatingLine, balls);
+                }
+                if(gameStateHandler.shouldNavigate() && navigationHandler!=null) {
+                    navigationHandler.handleNavigation();
+                }
             }
             try {
                 Thread.sleep(GameConstants.GAME_DELAY);
@@ -127,6 +147,8 @@ public class GameRunner implements Runnable{
         this.surfaceHolder = surfaceHolder;
     }
     public void handleTap() {
-        rotatingLine.handleTap();
+        if(gameStateHandler.shouldRender()) {
+            rotatingLine.handleTap();
+        }
     }
 }
