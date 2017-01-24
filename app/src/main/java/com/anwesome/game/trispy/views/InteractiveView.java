@@ -3,6 +3,7 @@ package com.anwesome.game.trispy.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -19,6 +20,8 @@ import java.util.List;
 public class InteractiveView extends View{
     private List<MenuBall> menuBalls = new ArrayList<>();
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private MenuBall selectedBall = null;
+    private boolean isAnimating = true;
     private RotatingLine rotatingLine = RotatingLine.newInstance(1,12,6);
     public void setMenuBalls(MenuBall... menuBalls) {
         for(MenuBall ball:menuBalls) {
@@ -32,31 +35,32 @@ public class InteractiveView extends View{
         canvas.drawColor(GameConstants.BACK_COLOR);
         rotatingLine.move();
         rotatingLine.draw(canvas,paint);
-        for(MenuBall ball:menuBalls) {
-            ball.draw(canvas,paint);
-            if(rotatingLine.getRot() == ball.getDeg()) {
-                if(ball.getNavigationHandler()!=null) {
-                    ball.getNavigationHandler().handleNavigation();
-                }
-                rotatingLine.setSpeed(0);
-                rotatingLine.setRot(270);
+        for(MenuBall menuBall:menuBalls) {
+            menuBall.draw(canvas,paint);
+        }
+        if(selectedBall!=null && rotatingLine.getRot() == selectedBall.getDeg()) {
+            rotatingLine.setSpeed(0);
+            if(selectedBall.getNavigationHandler()!=null) {
+                selectedBall.getNavigationHandler().handleNavigation();
+                isAnimating = false;
             }
         }
+        if(isAnimating) {
+            try {
+                Thread.sleep(100);
+                invalidate();
+            } catch (Exception ex) {
 
-
-        try {
-            Thread.sleep(100);
-            invalidate();
-        }
-        catch (Exception ex) {
-
+            }
         }
     }
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
             for(MenuBall ball:menuBalls) {
                 if(ball.containsTouch(event.getX(),event.getY())) {
-                    rotatingLine.setSpeed(15);
+                    float finalDeg = ball.getDeg();
+                    rotatingLine.setSpeed((finalDeg-(rotatingLine.getRot()-360))/6);
+                    selectedBall = ball;
                     break;
                 }
             }

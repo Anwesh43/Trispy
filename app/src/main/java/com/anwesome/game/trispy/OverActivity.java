@@ -30,7 +30,7 @@ public class OverActivity extends InteractiveActivity {
         MenuBall home = MenuBall.newInstance(BitmapFactory.decodeResource(getResources(),R.drawable.home),12,Color.parseColor("#b71c1c"));
         home.setX(w/2-gap);
         home.setY(h/2);
-        home.setDeg(0);
+        home.setDeg(180);
         home.setNavigationHandler(new MenuBall.NavigationHandler() {
             @Override
             public void handleNavigation() {
