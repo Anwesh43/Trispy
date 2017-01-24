@@ -16,14 +16,8 @@ import com.anwesome.game.trispy.gameobjects.MenuBall;
 import com.anwesome.game.trispy.views.GameView;
 import com.anwesome.game.trispy.views.InteractiveView;
 
-public class MainActivity extends AppCompatActivity {
-    private InteractiveView gameView;
-    private int w ,h;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        gameView = new InteractiveView(this);
-        initDimensions();
+public class MainActivity extends InteractiveActivity {
+    public void createMenus(InteractiveView interactiveView) {
         MenuBall playBall = MenuBall.newInstance(BitmapFactory.decodeResource(getResources(),R.drawable.play),12, Color.parseColor("#b71c1c"));
         playBall.setX(5*w/6);
         playBall.setY(h/2);
@@ -34,27 +28,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        gameView.setMenuBalls(playBall);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(gameView);
-
-    }
-    public void initDimensions() {
-        DisplayManager displayManager = (DisplayManager)getSystemService(Context.DISPLAY_SERVICE);
-        Point size = new Point();
-        Display display = displayManager.getDisplay(0);
-        if(display!=null) {
-            display.getRealSize(size);
-            w = size.x;
-            h = size.y;
-        }
-    }
-    public void onPause() {
-        super.onPause();
-    }
-    public void onResume() {
-        super.onResume();
+        interactiveView.setMenuBalls(playBall);
     }
 }
