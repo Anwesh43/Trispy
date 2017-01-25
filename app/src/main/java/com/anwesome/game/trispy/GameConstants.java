@@ -14,5 +14,8 @@ public class GameConstants {
     public static final int STROKE_SIZE = 20;
     public static final int LINE_SCALE = 3;
     public static final String GAME_OVER_TEXT ="GAME OVER";
+    public static final String SCORE_PREF="SCORE_PREF";
+    public static final String HIGH_SCORE_KEY="HIGH_SCORE";
+    public static final String SCORE_KEY="score";
     public static final int[] colors = {Color.parseColor("#2196F3"),Color.parseColor("#f44336"),Color.parseColor("#69F0AE"),Color.parseColor("#FF6E40")};
 }
