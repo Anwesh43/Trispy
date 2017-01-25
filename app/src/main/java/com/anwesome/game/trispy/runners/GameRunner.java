@@ -1,5 +1,7 @@
 package com.anwesome.game.trispy.runners;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.*;
 import android.view.*;
 import com.anwesome.game.trispy.GameConstants;
@@ -8,6 +10,7 @@ import com.anwesome.game.trispy.gameobjects.MovingBall;
 import com.anwesome.game.trispy.gameobjects.Ring;
 import com.anwesome.game.trispy.gameobjects.RotatingLine;
 import com.anwesome.game.trispy.utils.GameCreateUtil;
+import com.anwesome.game.trispy.utils.GameNavigationalHandler;
 import com.anwesome.game.trispy.utils.GameStateHandler;
 import com.anwesome.game.trispy.utils.GameStateIndicator;
 
@@ -18,13 +21,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class GameRunner implements Runnable{
     private boolean isRunning = false;
-    private MenuBall.NavigationHandler navigationHandler;
+    private GameNavigationalHandler navigationHandler;
 
-    public MenuBall.NavigationHandler getNavigationHandler() {
+    public GameNavigationalHandler getNavigationHandler() {
         return navigationHandler;
     }
 
-    public void setNavigationHandler(MenuBall.NavigationHandler navigationHandler) {
+    public void setNavigationHandler(GameNavigationalHandler navigationHandler) {
         this.navigationHandler = navigationHandler;
     }
 
@@ -39,6 +42,7 @@ public class GameRunner implements Runnable{
     private MovingBall currentBall;
     private GameStateHandler gameStateHandler;
     private GameStateIndicator gameStateIndicator;
+    private SharedPreferences sharedPreferences;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     public void run() {
         while(isRunning) {
@@ -110,7 +114,16 @@ public class GameRunner implements Runnable{
                     GameCreateUtil.createMovingBallForLevel(time, level, w, rotatingLine, balls);
                 }
                 if(gameStateHandler.shouldNavigate() && navigationHandler!=null) {
-                    navigationHandler.handleNavigation();
+                    if(sharedPreferences!=null) {
+                        int highScore = sharedPreferences.getInt(GameConstants.HIGH_SCORE_KEY,0);
+                        highScore = Math.max(highScore,gameStateHandler.getScore());
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt(GameConstants.HIGH_SCORE_KEY,highScore);
+                        editor.commit();
+                    }
+                    Intent intent = navigationHandler.getNavigationalIntent();
+                    intent.putExtra(GameConstants.SCORE_KEY,gameStateHandler.getScore());
+                    navigationHandler.handleNavigation(intent);
                 }
             }
             try {
@@ -143,8 +156,9 @@ public class GameRunner implements Runnable{
     public void resume() {
         isRunning = true;
     }
-    public GameRunner(SurfaceHolder surfaceHolder) {
+    public GameRunner(SurfaceHolder surfaceHolder, SharedPreferences sharedPreferences) {
         this.surfaceHolder = surfaceHolder;
+        this.sharedPreferences = sharedPreferences;
     }
     public void handleTap() {
         if(gameStateHandler.shouldRender()) {

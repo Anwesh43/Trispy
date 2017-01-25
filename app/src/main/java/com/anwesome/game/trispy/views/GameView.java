@@ -2,14 +2,17 @@ package com.anwesome.game.trispy.views;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.anwesome.game.trispy.GameConstants;
 import com.anwesome.game.trispy.OverActivity;
 import com.anwesome.game.trispy.gameobjects.MenuBall;
 import com.anwesome.game.trispy.runners.GameRunner;
+import com.anwesome.game.trispy.utils.GameNavigationalHandler;
 
 /**
  * Created by anweshmishra on 22/01/17.
@@ -19,12 +22,16 @@ public class GameView extends SurfaceView{
     private GameRunner runner;
     public GameView(final Context context) {
         super(context);
-        runner=new GameRunner(getHolder());
-        runner.setNavigationHandler(new MenuBall.NavigationHandler() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(GameConstants.SCORE_PREF,0);
+        runner=new GameRunner(getHolder(),sharedPreferences);
+        runner.setNavigationHandler(new GameNavigationalHandler() {
             @Override
-            public void handleNavigation() {
-                Intent intent = new Intent(context, OverActivity.class);
+            public void handleNavigation(Intent intent) {
                 context.startActivity(intent);
+            }
+            @Override
+            public Intent getNavigationalIntent() {
+                return new Intent(context,OverActivity.class);
             }
         });
         gameThread = new Thread(runner);
