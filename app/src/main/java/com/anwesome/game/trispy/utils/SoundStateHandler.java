@@ -43,7 +43,7 @@ public class SoundStateHandler {
         try {
             AssetFileDescriptor fd = context.getAssets().openFd(GameConstants.BACKGROUND_SOUND_FILE);
             mediaPlayer.setDataSource(fd.getFileDescriptor());
-            mediaPlayer.prepare();
+
             sourceLoaded = true;
         }
         catch (Exception ex) {
@@ -52,10 +52,16 @@ public class SoundStateHandler {
     }
     public void start() {
         if(!isPlaying) {
-            mediaPlayer.start();
-            mediaPlayer.setVolume(0,GameConstants.BACKGROUND_SOUND_VOLUME);
-            mediaPlayer.seekTo(seekTime);
-            isPlaying = true;
+            try {
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+                mediaPlayer.setVolume(0, GameConstants.BACKGROUND_SOUND_VOLUME);
+                mediaPlayer.seekTo(seekTime);
+                isPlaying = true;
+            }
+            catch (Exception ex) {
+
+            }
 
         }
 

@@ -12,7 +12,8 @@ import com.anwesome.game.trispy.utils.SoundStateHandler;
  */
 public class SoundControl {
     private SoundStateHandler soundStateHandler;
-    private float x,y,w=64,h=64;
+    private float x,y;
+    private int w=64,h=64;
     private int rendered = 0;
 
     public SoundControl(SoundStateHandler soundStateHandler) {
@@ -22,19 +23,19 @@ public class SoundControl {
         if(rendered == 0){
             x = canvas.getWidth()*19/20;
             y = canvas.getHeight()/20;
+            w = canvas.getWidth();
+            h = canvas.getWidth();
         }
         if(soundStateHandler!=null) {
             if(soundStateHandler.isPlaying()) {
                 Bitmap soundBitmap = soundStateHandler.getSoundBitmap();
-                w = soundBitmap.getWidth();
-                h = soundBitmap.getHeight();
-                canvas.drawBitmap(soundBitmap,x-w/2,y-h/2,paint);
+                soundBitmap = Bitmap.createScaledBitmap(soundBitmap,w/20,w/20,true);
+                canvas.drawBitmap(soundBitmap,x-w/40,y-w/40,paint);
             }
             else {
                 Bitmap muteBitmap = soundStateHandler.getMuteBitmap();
-                w = muteBitmap.getWidth();
-                h = muteBitmap.getHeight();
-                canvas.drawBitmap(muteBitmap,x-w/2,y-h/2,paint);
+                muteBitmap = Bitmap.createScaledBitmap(muteBitmap,w/20,w/20,true);
+                canvas.drawBitmap(muteBitmap,x-w/40,y-w/40,paint);
             }
         }
         rendered++;
