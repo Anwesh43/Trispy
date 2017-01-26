@@ -13,6 +13,7 @@ import com.anwesome.game.trispy.OverActivity;
 import com.anwesome.game.trispy.gameobjects.MenuBall;
 import com.anwesome.game.trispy.runners.GameRunner;
 import com.anwesome.game.trispy.utils.GameNavigationalHandler;
+import com.anwesome.game.trispy.utils.SoundStateHandler;
 
 /**
  * Created by anweshmishra on 22/01/17.
@@ -23,7 +24,7 @@ public class GameView extends SurfaceView{
     public GameView(final Context context) {
         super(context);
         SharedPreferences sharedPreferences = context.getSharedPreferences(GameConstants.SCORE_PREF,0);
-        runner=new GameRunner(getHolder(),sharedPreferences);
+        runner=new GameRunner(new SoundStateHandler(context),getHolder(),sharedPreferences);
         runner.setNavigationHandler(new GameNavigationalHandler() {
             @Override
             public void handleNavigation(Intent intent) {
@@ -56,7 +57,7 @@ public class GameView extends SurfaceView{
     }
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            runner.handleTap();
+            runner.handleTap(event.getX(),event.getY());
         }
         return true;
     }

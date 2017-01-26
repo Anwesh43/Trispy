@@ -17,5 +17,7 @@ public class GameConstants {
     public static final String SCORE_PREF="SCORE_PREF";
     public static final String HIGH_SCORE_KEY="HIGH_SCORE";
     public static final String SCORE_KEY="score";
+    public static final String BACKGROUND_SOUND_FILE="sureal_chase.mp3";
+    public static final float BACKGROUND_SOUND_VOLUME = 0.6f;
     public static final int[] colors = {Color.parseColor("#2196F3"),Color.parseColor("#f44336"),Color.parseColor("#69F0AE"),Color.parseColor("#FF6E40")};
 }

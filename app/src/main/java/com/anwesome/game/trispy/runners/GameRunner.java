@@ -1,5 +1,6 @@
 package com.anwesome.game.trispy.runners;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.*;
@@ -9,10 +10,12 @@ import com.anwesome.game.trispy.gameobjects.MenuBall;
 import com.anwesome.game.trispy.gameobjects.MovingBall;
 import com.anwesome.game.trispy.gameobjects.Ring;
 import com.anwesome.game.trispy.gameobjects.RotatingLine;
+import com.anwesome.game.trispy.gameobjects.SoundControl;
 import com.anwesome.game.trispy.utils.GameCreateUtil;
 import com.anwesome.game.trispy.utils.GameNavigationalHandler;
 import com.anwesome.game.trispy.utils.GameStateHandler;
 import com.anwesome.game.trispy.utils.GameStateIndicator;
+import com.anwesome.game.trispy.utils.SoundStateHandler;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -21,6 +24,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class GameRunner implements Runnable{
     private boolean isRunning = false;
+    private SoundStateHandler soundStateHandler;
     private GameNavigationalHandler navigationHandler;
 
     public GameNavigationalHandler getNavigationHandler() {
@@ -43,6 +47,7 @@ public class GameRunner implements Runnable{
     private GameStateHandler gameStateHandler;
     private GameStateIndicator gameStateIndicator;
     private SharedPreferences sharedPreferences;
+    private SoundControl soundControl;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     public void run() {
         while(isRunning) {
@@ -57,8 +62,10 @@ public class GameRunner implements Runnable{
                     gameStateHandler = GameStateHandler.newInstance();
                     gameStateIndicator = GameStateIndicator.newInstance(canvas,gameStateHandler);
                     balls.add(currentBall);
+                    soundControl = new SoundControl(soundStateHandler);
                 }
                 canvas.drawColor(GameConstants.BACK_COLOR);
+                soundControl.draw(canvas,paint);
                 rotatingLine.draw(canvas,paint);
                 if(gameStateHandler.shouldRender()) {
                     rotatingLine.move();
@@ -152,17 +159,22 @@ public class GameRunner implements Runnable{
     }
     public void pause() {
         isRunning = false;
+        soundStateHandler.pause();
     }
     public void resume() {
         isRunning = true;
+        soundStateHandler.start();
     }
-    public GameRunner(SurfaceHolder surfaceHolder, SharedPreferences sharedPreferences) {
+    public GameRunner(SoundStateHandler soundStateHandler,SurfaceHolder surfaceHolder, SharedPreferences sharedPreferences) {
         this.surfaceHolder = surfaceHolder;
         this.sharedPreferences = sharedPreferences;
+        this.soundStateHandler = soundStateHandler;
     }
-    public void handleTap() {
+    public void handleTap(float x,float y) {
         if(gameStateHandler.shouldRender()) {
-            rotatingLine.handleTap();
+            if(!(soundControl!=null && soundControl.containsTouch(x,y))) {
+                rotatingLine.handleTap();
+            }
         }
     }
 }
