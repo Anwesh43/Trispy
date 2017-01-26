@@ -16,7 +16,7 @@ import com.anwesome.game.trispy.views.InteractiveView;
  */
 public class InteractiveActivity extends AppCompatActivity{
     protected int w,h;
-
+    private InteractiveView interactiveView;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initDimensions();
@@ -39,7 +39,7 @@ public class InteractiveActivity extends AppCompatActivity{
 
     }
     private void createInteractiveView() {
-        InteractiveView interactiveView = new InteractiveView(this);
+        interactiveView = new InteractiveView(this);
         createMenus(interactiveView);
         setContentView(interactiveView);
     }
@@ -48,8 +48,11 @@ public class InteractiveActivity extends AppCompatActivity{
     }
     public void onPause() {
         super.onPause();
+        interactiveView.pause();
+
     }
     public void onResume() {
         super.onResume();
+        interactiveView.resume();
     }
 }

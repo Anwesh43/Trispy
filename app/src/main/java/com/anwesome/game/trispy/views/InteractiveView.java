@@ -12,6 +12,8 @@ import android.view.View;
 import com.anwesome.game.trispy.GameConstants;
 import com.anwesome.game.trispy.gameobjects.MenuBall;
 import com.anwesome.game.trispy.gameobjects.RotatingLine;
+import com.anwesome.game.trispy.gameobjects.SoundControl;
+import com.anwesome.game.trispy.utils.SoundStateHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,8 @@ public class InteractiveView extends View{
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private MenuBall selectedBall = null;
     private boolean isAnimating = true;
+    protected SoundStateHandler soundStateHandler;
+    protected SoundControl soundControl;
     private RotatingLine rotatingLine = RotatingLine.newInstance(1,12,6);
     public void setMenuBalls(MenuBall... menuBalls) {
         for(MenuBall ball:menuBalls) {
@@ -33,9 +37,22 @@ public class InteractiveView extends View{
     }
     public InteractiveView(Context context) {
         super(context);
+        soundStateHandler = new SoundStateHandler(context);
+        soundControl = new SoundControl(soundStateHandler);
+    }
+    public void pause() {
+        if(soundStateHandler!=null) {
+            soundStateHandler.pause();
+        }
+    }
+    public void resume() {
+        if(soundStateHandler!=null) {
+            soundStateHandler.start();
+        }
     }
     public void onDraw(Canvas canvas) {
         canvas.drawColor(GameConstants.BACK_COLOR);
+        drawSoundControl(canvas,paint);
         int y = canvas.getHeight()/8,y_gap = canvas.getHeight()/20;
         paint.setColor(Color.WHITE);
         paint.setTextSize(canvas.getHeight()/20);
@@ -64,14 +81,21 @@ public class InteractiveView extends View{
             }
         }
     }
+    protected void drawSoundControl(Canvas canvas,Paint paint) {
+        if(soundControl!=null) {
+            soundControl.draw(canvas,paint);
+        }
+    }
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            for(MenuBall ball:menuBalls) {
-                if(ball.containsTouch(event.getX(),event.getY())) {
-                    float finalDeg = ball.getDeg();
-                    rotatingLine.setSpeed((finalDeg-(rotatingLine.getRot()-360))/6);
-                    selectedBall = ball;
-                    break;
+            if(!(soundControl!=null && soundControl.containsTouch(event.getX(),event.getY()))) {
+                for(MenuBall ball:menuBalls) {
+                    if(ball.containsTouch(event.getX(),event.getY())) {
+                        float finalDeg = ball.getDeg();
+                        rotatingLine.setSpeed((finalDeg-(rotatingLine.getRot()-360))/6);
+                        selectedBall = ball;
+                        break;
+                    }
                 }
             }
         }
