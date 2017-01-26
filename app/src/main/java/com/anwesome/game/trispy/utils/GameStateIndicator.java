@@ -25,7 +25,7 @@ public class GameStateIndicator {
             String text = "" + gameStateHandler.getScore();
             paint.setTextSize(canvas.getWidth() / 8);
             paint.setColor(Color.WHITE);
-            paint.setStyle(Paint.Style.STROKE);
+            paint.setStyle(Paint.Style.FILL);
             canvas.drawText(text, canvas.getWidth() / 2 - paint.measureText(text) / 2, canvas.getHeight() / 8 - paint.getTextSize() / 2, paint);
             showScoreTime++;
             if(showScoreTime == maxScore) {
@@ -38,7 +38,7 @@ public class GameStateIndicator {
         if(gameStateHandler.isShouldShowOver()) {
             paint.setTextSize(canvas.getWidth() / 6);
             paint.setColor(Color.parseColor("#263238"));
-            paint.setStyle(Paint.Style.STROKE);
+            paint.setStyle(Paint.Style.FILL);
             canvas.drawText(GameConstants.GAME_OVER_TEXT,canvas.getWidth()/2-paint.measureText(GameConstants.GAME_OVER_TEXT)/2,canvas.getHeight()/2-paint.getTextSize()/2,paint);
             showOver++;
             if(showOver == maxOver) {
