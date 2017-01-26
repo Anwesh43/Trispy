@@ -57,6 +57,7 @@ public class SoundStateHandler {
                 mediaPlayer.start();
                 mediaPlayer.setVolume(0, GameConstants.BACKGROUND_SOUND_VOLUME);
                 mediaPlayer.seekTo(seekTime);
+                mediaPlayer.setLooping(true);
                 isPlaying = true;
             }
             catch (Exception ex) {
