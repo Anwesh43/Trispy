@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class GameRunner implements Runnable{
     private boolean isRunning = false;
+    private int colorIndex = 0;
     private SoundStateHandler soundStateHandler;
     private GameNavigationalHandler navigationHandler;
 
@@ -64,7 +65,8 @@ public class GameRunner implements Runnable{
                     balls.add(currentBall);
                     soundControl = new SoundControl(soundStateHandler);
                 }
-                canvas.drawColor(GameConstants.BACK_COLOR);
+                canvas.drawColor(Color.WHITE);
+                canvas.drawColor(Color.parseColor(GameConstants.GAME_BACK_COLORS[colorIndex]));
                 soundControl.draw(canvas,paint);
                 rotatingLine.draw(canvas,paint);
                 if(gameStateHandler.shouldRender()) {
@@ -117,6 +119,10 @@ public class GameRunner implements Runnable{
                     setFirstBallAsCurrent();
                 }
                 time++;
+                if(time%50 == 0) {
+                    colorIndex++;
+                    colorIndex%=GameConstants.GAME_BACK_COLORS.length;
+                }
                 if(gameStateHandler.shouldRender()) {
                     GameCreateUtil.createMovingBallForLevel(time, level, w, rotatingLine, balls);
                 }

@@ -43,7 +43,7 @@ public class GameCreateUtil {
         return index;
     }
     public static void createMovingBallForLevel(int time, int level, int w,RotatingLine rotatingLine,ConcurrentLinkedQueue<MovingBall> balls) {
-        if((time)%(40-level*4) == 0) {
+        if(level <= 7 && (time)%(40-level*4) == 0) {
             Random random = new Random();
             int rotIndex = random.nextInt(4);
             float rot = rotatingLine.getRot()+rotIndex*90;
