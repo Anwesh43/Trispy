@@ -55,6 +55,9 @@ public class GameView extends SurfaceView{
                                 });
                                 interstitialAd.show();
                             }
+                            else {
+                                context.startActivity(intent);
+                            }
                         }
                     });
                 }
