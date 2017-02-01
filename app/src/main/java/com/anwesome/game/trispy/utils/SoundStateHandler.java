@@ -5,7 +5,11 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.os.Build;
 import android.util.Log;
 
 import com.anwesome.game.trispy.GameConstants;
@@ -19,7 +23,9 @@ public class SoundStateHandler {
     private int seekTime = 0;
     private boolean isPlaying = false;
     private Bitmap soundBitmap,muteBitmap;
-    private boolean sourceLoaded = false;
+    private SoundPool soundPool;
+    private int tickId;
+    private boolean sourceLoaded = false,tickLoaded = false;
     public Bitmap getMuteBitmap() {
         return muteBitmap;
     }
@@ -43,12 +49,12 @@ public class SoundStateHandler {
         try {
             AssetFileDescriptor fd = context.getAssets().openFd(GameConstants.BACKGROUND_SOUND_FILE);
             mediaPlayer.setDataSource(fd.getFileDescriptor());
-
             sourceLoaded = true;
         }
         catch (Exception ex) {
             Log.d("exception",ex.toString());
         }
+        initTickPlayer(context);
     }
     public void start() {
         if(!isPlaying) {
@@ -72,6 +78,35 @@ public class SoundStateHandler {
             seekTime = mediaPlayer.getCurrentPosition();
             mediaPlayer.stop();
             isPlaying = false;
+        }
+    }
+    public void initTickPlayer(Context context) {
+        try {
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+                soundPool = new SoundPool.Builder().setMaxStreams(1).build();
+
+            }
+             else {
+                soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC,0);
+            }
+            AssetFileDescriptor tickFileDescriptor = context.getAssets().openFd("tick.mp3");
+            tickId = soundPool.load(tickFileDescriptor,1);
+            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int i, int i1) {
+                    soundPool.setVolume(0,0.8f,1.0f);
+                    tickLoaded = true;
+                }
+            });
+
+        }
+        catch (Exception ex) {
+            Log.d("ex:soundpool:",ex.toString());
+        }
+    }
+    public void playTick() {
+        if(soundPool!=null && tickLoaded) {
+            soundPool.play(tickId,1,1,0,0,1);
         }
     }
     public boolean isPlaying() {

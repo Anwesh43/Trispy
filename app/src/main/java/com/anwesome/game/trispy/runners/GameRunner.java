@@ -52,92 +52,94 @@ public class GameRunner implements Runnable{
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     public void run() {
         while(isRunning) {
-            if(surfaceHolder.getSurface().isValid()) {
-                Canvas canvas = surfaceHolder.lockCanvas();
-                if(time == 0){
-                    w = canvas.getWidth();
-                    h = canvas.getHeight();
-                    rings = GameCreateUtil.createRings();
-                    rotatingLine = RotatingLine.newInstance();
-                    currentBall = GameCreateUtil.createBall(0,w);
-                    gameStateHandler = GameStateHandler.newInstance();
-                    gameStateIndicator = GameStateIndicator.newInstance(canvas,gameStateHandler);
-                    balls.add(currentBall);
-                    soundControl = new SoundControl(soundStateHandler);
-                }
-                canvas.drawColor(Color.WHITE);
-                canvas.drawColor(Color.parseColor(GameConstants.GAME_BACK_COLORS[colorIndex]));
-                soundControl.draw(canvas,paint);
-                rotatingLine.draw(canvas,paint);
+            if(!surfaceHolder.getSurface().isValid()) {
+                continue;
+            }
+            Canvas canvas = surfaceHolder.lockCanvas();
+            if(time == 0){
+                w = canvas.getWidth();
+                h = canvas.getHeight();
+                rings = GameCreateUtil.createRings();
+                rotatingLine = RotatingLine.newInstance();
+                currentBall = GameCreateUtil.createBall(0,w);
+                gameStateHandler = GameStateHandler.newInstance();
+                gameStateIndicator = GameStateIndicator.newInstance(canvas,gameStateHandler);
+                balls.add(currentBall);
+                soundControl = new SoundControl(soundStateHandler);
+            }
+            canvas.drawColor(Color.WHITE);
+            canvas.drawColor(Color.parseColor(GameConstants.GAME_BACK_COLORS[colorIndex]));
+            soundControl.draw(canvas,paint);
+            rotatingLine.draw(canvas,paint);
+            if(gameStateHandler.shouldRender()) {
+                rotatingLine.move();
+            }
+            for(MovingBall movingBall:balls) {
+                movingBall.setRotSpeed(rotatingLine.getSpeed());
+                movingBall.draw(canvas,paint);
                 if(gameStateHandler.shouldRender()) {
-                    rotatingLine.move();
+                    movingBall.move();
                 }
-                for(MovingBall movingBall:balls) {
-                    movingBall.setRotSpeed(rotatingLine.getSpeed());
-                    movingBall.draw(canvas,paint);
-                    if(gameStateHandler.shouldRender()) {
-                        movingBall.move();
+            }
+            for(Ring ring:rings) {
+                ring.draw(canvas,paint);
+                if(rotatingLine.getRot() == ring.getDeg()) {
+                    rotatingLine.setSpeed(0);
+                    if(currentBall!=null) {
+                        float currentBallDeg = currentBall.getDeg();
+                        int ringColorIndexForCurrentBall = (int) (currentBallDeg / 90);
+                        currentRingColor = checkForRingColor(ringColorIndexForCurrentBall);
                     }
                 }
-                for(Ring ring:rings) {
-                    ring.draw(canvas,paint);
-                    if(rotatingLine.getRot() == ring.getDeg()) {
-                        rotatingLine.setSpeed(0);
-                        if(currentBall!=null) {
-                            float currentBallDeg = currentBall.getDeg();
-                            int ringColorIndexForCurrentBall = (int) (currentBallDeg / 90);
-                            currentRingColor = checkForRingColor(ringColorIndexForCurrentBall);
-                        }
+            }
+            if(currentBall!=null && currentBall.isAtEdge()) {
+                if (currentRingColor == currentBall.getColor()) {
+                    soundStateHandler.playTick();
+                    balls.remove(currentBall);
+                    gameStateHandler.addScore();
+                    if(gameStateHandler.getScore()%5 == 0) {
+                        level++;
                     }
-                }
-                if(currentBall!=null && currentBall.isAtEdge()) {
-                    if (currentRingColor == currentBall.getColor()) {
-                        balls.remove(currentBall);
-                        gameStateHandler.addScore();
-                        if(gameStateHandler.getScore()%5 == 0) {
-                            level++;
-                        }
-                        //Code to set first ball of the collection as currentBall
-                        if(balls.size()>0) {
-                            setFirstBallAsCurrent();
-                        }
-                        else {
-                            currentBall = null;
-                        }
+                    //Code to set first ball of the collection as currentBall
+                    if(balls.size()>0) {
+                        setFirstBallAsCurrent();
                     }
-
                     else {
-                        gameStateHandler.showOver();
-                        gameStateHandler.pause();
+                        currentBall = null;
                     }
                 }
-                currentRingColor = 0;
-                gameStateIndicator.drawScore(paint);
-                gameStateIndicator.drawOver(paint);
-                surfaceHolder.unlockCanvasAndPost(canvas);
-                if(balls.size()>0 && currentBall == null) {
-                    setFirstBallAsCurrent();
+
+                else {
+                    gameStateHandler.showOver();
+                    gameStateHandler.pause();
                 }
-                time++;
-                if(time%50 == 0) {
-                    colorIndex++;
-                    colorIndex%=GameConstants.GAME_BACK_COLORS.length;
+            }
+            currentRingColor = 0;
+            gameStateIndicator.drawScore(paint);
+            gameStateIndicator.drawOver(paint);
+            surfaceHolder.unlockCanvasAndPost(canvas);
+            if(balls.size()>0 && currentBall == null) {
+                setFirstBallAsCurrent();
+            }
+            time++;
+            if(time%50 == 0) {
+                colorIndex++;
+                colorIndex%=GameConstants.GAME_BACK_COLORS.length;
+            }
+            if(gameStateHandler.shouldRender()) {
+                GameCreateUtil.createMovingBallForLevel(time, level, w, rotatingLine, balls);
+            }
+            if(gameStateHandler.shouldNavigate() && navigationHandler!=null) {
+                if(sharedPreferences!=null) {
+                    int highScore = sharedPreferences.getInt(GameConstants.HIGH_SCORE_KEY,0);
+                    highScore = Math.max(highScore,gameStateHandler.getScore());
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt(GameConstants.HIGH_SCORE_KEY,highScore);
+                    editor.commit();
                 }
-                if(gameStateHandler.shouldRender()) {
-                    GameCreateUtil.createMovingBallForLevel(time, level, w, rotatingLine, balls);
-                }
-                if(gameStateHandler.shouldNavigate() && navigationHandler!=null) {
-                    if(sharedPreferences!=null) {
-                        int highScore = sharedPreferences.getInt(GameConstants.HIGH_SCORE_KEY,0);
-                        highScore = Math.max(highScore,gameStateHandler.getScore());
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putInt(GameConstants.HIGH_SCORE_KEY,highScore);
-                        editor.commit();
-                    }
-                    Intent intent = navigationHandler.getNavigationalIntent();
-                    intent.putExtra(GameConstants.SCORE_KEY,gameStateHandler.getScore());
-                    navigationHandler.handleNavigation(intent);
-                }
+                Intent intent = navigationHandler.getNavigationalIntent();
+                intent.putExtra(GameConstants.SCORE_KEY,gameStateHandler.getScore());
+                navigationHandler.handleNavigation(intent);
             }
             try {
                 Thread.sleep(GameConstants.GAME_DELAY);
