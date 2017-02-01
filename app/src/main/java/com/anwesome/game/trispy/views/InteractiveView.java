@@ -61,7 +61,7 @@ public class InteractiveView extends View{
             y+=y_gap;
         }
         rotatingLine.move();
-        rotatingLine.draw(canvas,paint);
+        rotatingLine.draw(canvas,paint,GameConstants.ROTATING_LINE_COLOR,0);
         for(MenuBall menuBall:menuBalls) {
             menuBall.draw(canvas,paint);
         }

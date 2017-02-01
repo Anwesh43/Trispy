@@ -70,7 +70,14 @@ public class GameRunner implements Runnable{
             canvas.drawColor(Color.WHITE);
             canvas.drawColor(Color.parseColor(GameConstants.GAME_BACK_COLORS[colorIndex]));
             soundControl.draw(canvas,paint);
-            rotatingLine.draw(canvas,paint);
+            int rotatingLineColor = GameConstants.ROTATING_LINE_COLOR;
+            int cDeg = 0;
+            for(MovingBall movingBall:balls) {
+                rotatingLineColor = movingBall.getColor();
+                cDeg = (int)movingBall.getDeg();
+                break;
+            }
+            rotatingLine.draw(canvas, paint,rotatingLineColor,cDeg);
             if(gameStateHandler.shouldRender()) {
                 rotatingLine.move();
             }
