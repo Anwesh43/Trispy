@@ -21,4 +21,6 @@ public class GameConstants {
     public static final float BACKGROUND_SOUND_VOLUME = 0.4f;
     public static final String GAME_BACK_COLORS[] = {"#3F51B5","#AA00FF","#00BFA5","#00897B"};
     public static final int[] colors = {Color.parseColor("#2196F3"),Color.parseColor("#f44336"),Color.parseColor("#69F0AE"),Color.parseColor("#FF6E40")};
+    public static final String AD_UNIT_ID = "ca-app-pub-8926878958976462/2194723637";
+    public static final String GAME_PLAYED_KEY = "GAME_PLAYED";
 }
