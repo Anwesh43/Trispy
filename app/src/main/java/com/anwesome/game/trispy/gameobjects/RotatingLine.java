@@ -20,6 +20,23 @@ public class RotatingLine {
         }
         return new RotatingLine();
     }
+
+    public int getRadiusScale() {
+        return radiusScale;
+    }
+
+    public void setRadiusScale(int radiusScale) {
+        this.radiusScale = radiusScale;
+    }
+
+    public int getLineScale() {
+        return lineScale;
+    }
+
+    public void setLineScale(int lineScale) {
+        this.lineScale = lineScale;
+    }
+
     public void setMaxSpeed(float maxSpeed) {
         this.maxSpeed = maxSpeed;
     }
