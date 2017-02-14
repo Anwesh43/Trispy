@@ -26,7 +26,7 @@ public class InteractiveView extends View{
     private List<MenuBall> menuBalls = new ArrayList<>();
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private MenuBall selectedBall = null;
-    private boolean isAnimating = true;
+    private boolean isAnimating = false;
     protected SoundStateHandler soundStateHandler;
     protected SoundControl soundControl;
     private RotatingLine rotatingLine = RotatingLine.newInstance(1,12,6);
@@ -94,6 +94,8 @@ public class InteractiveView extends View{
                         float finalDeg = ball.getDeg();
                         rotatingLine.setSpeed((finalDeg-(rotatingLine.getRot()-360))/6);
                         selectedBall = ball;
+                        isAnimating = true;
+                        postInvalidate();
                         break;
                     }
                 }
