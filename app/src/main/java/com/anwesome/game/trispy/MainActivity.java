@@ -26,7 +26,7 @@ public class MainActivity extends InteractiveActivity {
         playBall.setNavigationHandler(new MenuBall.NavigationHandler() {
             @Override
             public void handleNavigation() {
-                Intent intent = new Intent(MainActivity.this,GameAcivity.class);
+                Intent intent = new Intent(MainActivity.this,InstructionActivity.class);
                 startActivity(intent);
             }
         });
