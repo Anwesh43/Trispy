@@ -12,7 +12,7 @@ public class MovingBall {
     private float deg,x,rotSpeed = 0;
     private int color;
     private int edge=0,rendered = 0;
-    private final float xSpeed = 25;
+    private final float xSpeed = 20;
     private MovingBall(float x,float deg,int color) {
         this.deg = deg;
         this.x = x;

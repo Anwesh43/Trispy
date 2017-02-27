@@ -96,7 +96,7 @@ public class InstructionController {
         String msg = "";
         float widthLimit = 7*canvas.getWidth()/10,x=canvas.getWidth()/2;
         String tokens[] = instructions[store.getMode()].split(" ");
-        float y = canvas.getHeight()/20;
+        float y = canvas.getHeight()/10;
         for(String token:tokens) {
             if(paint.measureText(msg+" "+token)>widthLimit) {
                 canvas.drawText(msg,x-paint.measureText(msg)/2,y,paint);

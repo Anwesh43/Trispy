@@ -104,7 +104,7 @@ public class GameRunner implements Runnable{
                     soundStateHandler.playTick();
                     balls.remove(currentBall);
                     gameStateHandler.addScore();
-                    if(gameStateHandler.getScore()%5 == 0) {
+                    if(gameStateHandler.getScore()%3 == 0) {
                         level++;
                     }
                     //Code to set first ball of the collection as currentBall
