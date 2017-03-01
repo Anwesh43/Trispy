@@ -17,17 +17,20 @@ public class SplashView extends View {
     private RotatingLine rotatingLine;
     private SplashText splashText = SplashText.newInstance("TRIPSY");
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Typeface typeface;
     private GameNavigationalHandler navigationalHandler;
     public SplashView(Context context) {
         super(context);
         rotatingLine = RotatingLine.newInstance();
         rotatingLine.setSpeed(30);
         rotatingLine.setAlpha(0);
+        typeface = Typeface.createFromAsset(context.getAssets(),"Otto.ttf");
     }
     public void onDraw(Canvas canvas) {
+        paint.setTypeface(typeface);
         canvas.drawColor(Color.parseColor(GameConstants.SPLASH_BACK_COLOR));
         rotatingLine.draw(canvas,paint,GameConstants.ROTATING_LINE_COLOR,0);
-        splashText.render(canvas,paint,canvas.getWidth()/2,canvas.getHeight()/5);
+        splashText.render(canvas,paint,canvas.getWidth()/2,canvas.getHeight()/7);
         if(time>=3 && time < 7 ) {
             rotatingLine.incrementAlpha();
         }

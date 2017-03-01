@@ -36,8 +36,8 @@ public class GameStateIndicator {
     }
     public void drawOver(Paint paint) {
         if(gameStateHandler.isShouldShowOver()) {
-            paint.setTextSize(canvas.getWidth() / 6);
-            paint.setColor(Color.parseColor("#263238"));
+            paint.setTextSize(canvas.getWidth() / 9);
+            paint.setColor(Color.WHITE);
             paint.setStyle(Paint.Style.FILL);
             canvas.drawText(GameConstants.GAME_OVER_TEXT,canvas.getWidth()/2-paint.measureText(GameConstants.GAME_OVER_TEXT)/2,canvas.getHeight()/2-paint.getTextSize()/2,paint);
             showOver++;

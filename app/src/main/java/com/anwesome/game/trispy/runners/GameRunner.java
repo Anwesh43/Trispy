@@ -49,7 +49,11 @@ public class GameRunner implements Runnable{
     private GameStateIndicator gameStateIndicator;
     private SharedPreferences sharedPreferences;
     private SoundControl soundControl;
+    private Typeface typeface;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    public void setTypeface(Typeface typeface) {
+        this.typeface = typeface;
+    }
     public void run() {
         while(isRunning) {
             if(!surfaceHolder.getSurface().isValid()) {
@@ -66,6 +70,9 @@ public class GameRunner implements Runnable{
                 gameStateIndicator = GameStateIndicator.newInstance(canvas,gameStateHandler);
                 balls.add(currentBall);
                 soundControl = new SoundControl(soundStateHandler);
+            }
+            if(typeface!=null) {
+                paint.setTypeface(typeface);
             }
             canvas.drawColor(Color.WHITE);
             canvas.drawColor(Color.parseColor(GameConstants.GAME_BACK_COLORS[colorIndex]));

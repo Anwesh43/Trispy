@@ -18,7 +18,7 @@ public class SplashText {
     }
     public void render(Canvas canvas, Paint paint,float x,float y) {
         paint.setStyle(Paint.Style.FILL);
-        paint.setTextSize(120);
+        paint.setTextSize(canvas.getHeight()/4);
         paint.setColor(Color.WHITE);
         paint.setAlpha(alpha);
         canvas.save();

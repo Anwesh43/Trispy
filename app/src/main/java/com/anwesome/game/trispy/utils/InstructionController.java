@@ -57,7 +57,7 @@ public class InstructionController {
         }
         w = canvas.getWidth();
         paint.setStyle(Paint.Style.FILL);
-        paint.setTextSize(canvas.getHeight()/20);
+        paint.setTextSize(canvas.getHeight()/30);
         paint.setColor(Color.WHITE);
         drawText(canvas,paint);
         if(store.getMode() == 1) {

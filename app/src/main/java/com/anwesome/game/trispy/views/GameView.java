@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
+import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
@@ -25,11 +26,14 @@ import com.google.android.gms.ads.InterstitialAd;
 public class GameView extends SurfaceView{
     private Thread gameThread;
     private GameRunner runner;
+    private Typeface typeface;
     private InterstitialAd interstitialAd;
     public GameView(final Context context) {
         super(context);
+        typeface = Typeface.createFromAsset(context.getAssets(),"cucumber.ttf");
         final SharedPreferences sharedPreferences = context.getSharedPreferences(GameConstants.SCORE_PREF,0);
         runner=new GameRunner(new SoundStateHandler(context),getHolder(),sharedPreferences);
+        runner.setTypeface(typeface);
         interstitialAd = new InterstitialAd(context);
         interstitialAd.setAdUnitId(GameConstants.AD_UNIT_ID);
 
