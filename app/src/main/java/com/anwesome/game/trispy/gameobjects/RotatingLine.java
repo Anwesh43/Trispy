@@ -4,6 +4,7 @@ import android.graphics.*;
 import com.anwesome.game.trispy.GameConstants;
 
 public class RotatingLine {
+    private int alpha = 255;
     private float rot = 270,maxSpeed = GameConstants.ROTATING_SPEED,speed = 0;
     private int lines = 4,radiusScale = GameConstants.RING_RADIUS_SCALE,lineScale = GameConstants.LINE_SCALE;
     private RotatingLine() {
@@ -13,6 +14,9 @@ public class RotatingLine {
         this.lines = lines;
         this.radiusScale = radiusScale;
         this.lineScale = lineScale;
+    }
+    public void setAlpha(int alpha) {
+        this.alpha = alpha;
     }
     public static RotatingLine newInstance(int... arguments) {
         if(arguments.length == 3) {
@@ -58,12 +62,14 @@ public class RotatingLine {
     public void draw(Canvas canvas, Paint paint,int color,int deg) {
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(color);
+        paint.setAlpha(alpha);
         paint.setStrokeWidth(GameConstants.STROKE_SIZE);
         int x = canvas.getWidth()/2,y = canvas.getHeight()/2,r = canvas.getWidth()/radiusScale,x1 = r+canvas.getWidth()/lineScale;
         canvas.save();
         canvas.translate(x,y);
         canvas.rotate(rot);
         paint.setColor(color);
+        paint.setAlpha(alpha);
         canvas.drawCircle(0,0,r,paint);
         for(int i=0;i<lines;i++) {
             canvas.save();
@@ -74,6 +80,7 @@ public class RotatingLine {
             else {
                 paint.setColor(GameConstants.ROTATING_LINE_COLOR);
             }
+            paint.setAlpha(alpha);
             canvas.drawLine(r, 0, x1, 0, paint);
             canvas.restore();
         }
@@ -82,6 +89,9 @@ public class RotatingLine {
     public void move() {
         rot+=speed;
         rot%=360;
+    }
+    public void incrementAlpha() {
+        alpha+=55;
     }
     public void handleTap(){
         if(speed == 0) {
