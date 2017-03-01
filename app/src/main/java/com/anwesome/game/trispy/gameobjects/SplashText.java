@@ -20,16 +20,14 @@ public class SplashText {
         paint.setStyle(Paint.Style.FILL);
         paint.setTextSize(120);
         paint.setColor(Color.WHITE);
+        paint.setAlpha(alpha);
         canvas.save();
         canvas.translate(x,y);
-        canvas.scale(scale,scale);
         canvas.drawText(text,-paint.measureText(text)/2,0,paint);
         canvas.restore();
-
     }
     public void animate() {
-        if(scale<1 && alpha<255) {
-            scale+=0.2f;
+        if(alpha<255) {
             alpha+=55;
         }
     }
