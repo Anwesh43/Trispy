@@ -41,18 +41,11 @@ public class InteractiveView extends View{
         soundControl = new SoundControl(soundStateHandler);
     }
     public void pause() {
-        if(soundStateHandler!=null) {
-            soundStateHandler.pause();
-        }
     }
     public void resume() {
-        if(soundStateHandler!=null) {
-            soundStateHandler.start();
-        }
     }
     public void onDraw(Canvas canvas) {
         canvas.drawColor(GameConstants.BACK_COLOR);
-        drawSoundControl(canvas,paint);
         int y = canvas.getHeight()/8,y_gap = canvas.getHeight()/20;
         paint.setColor(Color.WHITE);
         paint.setTextSize(canvas.getHeight()/20);
@@ -79,11 +72,6 @@ public class InteractiveView extends View{
             } catch (Exception ex) {
 
             }
-        }
-    }
-    protected void drawSoundControl(Canvas canvas,Paint paint) {
-        if(soundControl!=null) {
-            soundControl.draw(canvas,paint);
         }
     }
     public boolean onTouchEvent(MotionEvent event) {
