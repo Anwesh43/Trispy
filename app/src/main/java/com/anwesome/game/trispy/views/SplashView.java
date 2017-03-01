@@ -20,29 +20,28 @@ public class SplashView extends View {
     private GameNavigationalHandler navigationalHandler;
     public SplashView(Context context) {
         super(context);
-        rotatingLine = RotatingLine.newInstance(4,80,40);
+        rotatingLine = RotatingLine.newInstance();
         rotatingLine.setSpeed(30);
+        rotatingLine.setAlpha(0);
     }
     public void onDraw(Canvas canvas) {
         canvas.drawColor(Color.parseColor(GameConstants.SPLASH_BACK_COLOR));
         rotatingLine.draw(canvas,paint,GameConstants.ROTATING_LINE_COLOR,0);
         splashText.render(canvas,paint,canvas.getWidth()/2,canvas.getHeight()/5);
-        if(time < 6 ) {
-            rotatingLine.move();
-            rotatingLine.setLineScale(rotatingLine.getLineScale()-5);
-            rotatingLine.setRadiusScale(rotatingLine.getRadiusScale()-10);
+        if(time>=3 && time < 7 ) {
+            rotatingLine.incrementAlpha();
         }
-        else if(time>=6 && time<17){
+        else if(time>=7 && time<11){
             splashText.animate();
         }
-        else if(navigationalHandler!=null) {
+        else if(time>=16 && navigationalHandler!=null) {
             Intent intent = navigationalHandler.getNavigationalIntent();
             navigationalHandler.handleNavigation(intent);
         }
         time++;
-        if(time < 18) {
+        if(time < 17) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(200);
                 invalidate();
             } catch (Exception ex) {
 
