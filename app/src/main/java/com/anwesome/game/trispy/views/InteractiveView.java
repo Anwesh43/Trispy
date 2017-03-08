@@ -76,6 +76,9 @@ public class InteractiveView extends View{
             rotatingLine.setSpeed(0);
             if(selectedBall.getNavigationHandler()!=null) {
                 selectedBall.getNavigationHandler().handleNavigation();
+                if(soundStateHandler!=null) {
+                    soundStateHandler.playTick();
+                }
                 isAnimating = false;
             }
         }
