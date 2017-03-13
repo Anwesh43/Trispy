@@ -6,7 +6,7 @@ import com.anwesome.game.trispy.GameConstants;
 public class RotatingLine {
     private int alpha = 255;
     private float rot = 270,maxSpeed = GameConstants.ROTATING_SPEED,speed = 0;
-    private int lines = 4,radiusScale = GameConstants.RING_RADIUS_SCALE,lineScale = GameConstants.LINE_SCALE;
+    private float lines = 4,radiusScale = GameConstants.RING_RADIUS_SCALE,lineScale = GameConstants.LINE_SCALE;
     private RotatingLine() {
 
     }
@@ -25,19 +25,19 @@ public class RotatingLine {
         return new RotatingLine();
     }
 
-    public int getRadiusScale() {
+    public float getRadiusScale() {
         return radiusScale;
     }
 
-    public void setRadiusScale(int radiusScale) {
+    public void setRadiusScale(float radiusScale) {
         this.radiusScale = radiusScale;
     }
 
-    public int getLineScale() {
+    public float getLineScale() {
         return lineScale;
     }
 
-    public void setLineScale(int lineScale) {
+    public void setLineScale(float lineScale) {
         this.lineScale = lineScale;
     }
 
@@ -64,7 +64,7 @@ public class RotatingLine {
         paint.setColor(color);
         paint.setAlpha(alpha);
         paint.setStrokeWidth(GameConstants.STROKE_SIZE);
-        int x = canvas.getWidth()/2,y = canvas.getHeight()/2,r = canvas.getWidth()/radiusScale,x1 = r+canvas.getWidth()/lineScale;
+        int x = canvas.getWidth()/2,y = canvas.getHeight()/2,r = (int)(canvas.getWidth()/radiusScale),x1 = r+(int)(canvas.getWidth()/lineScale);
         canvas.save();
         canvas.translate(x,y);
         canvas.rotate(rot);

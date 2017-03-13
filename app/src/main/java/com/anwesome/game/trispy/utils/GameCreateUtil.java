@@ -31,7 +31,7 @@ public class GameCreateUtil {
         int colorIndex = random.nextInt(GameConstants.colors.length);
         int color = GameConstants.colors[colorIndex];
         MovingBall movingBall = MovingBall.newInstance(0,deg,color);
-        movingBall.setEdge(2*canvasWidth/GameConstants.RING_RADIUS_SCALE+canvasWidth/GameConstants.LINE_SCALE);
+        movingBall.setEdge((int)(2*canvasWidth/GameConstants.RING_RADIUS_SCALE+canvasWidth/GameConstants.LINE_SCALE));
         return movingBall;
     }
     private static int getRandomIndex(Map<Integer,Ring> ringMap) {

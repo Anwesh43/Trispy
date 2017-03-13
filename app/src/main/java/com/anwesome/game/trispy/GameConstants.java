@@ -6,13 +6,13 @@ import android.graphics.Color;
  * Created by anweshmishra on 22/01/17.
  */
 public class GameConstants {
-    public static final int GAME_DELAY = 35;
+    public static final int GAME_DELAY = 42;
     public static final int ROTATING_LINE_COLOR = Color.parseColor("#EEEEEE");
     public static final int RING_RADIUS_SCALE = 40;
     public static final float ROTATING_SPEED = 6;
     public static final int BACK_COLOR = Color.parseColor("#00ACC1");
     public static final int STROKE_SIZE = 20;
-    public static final int LINE_SCALE = 3;
+    public static final float LINE_SCALE = 2.5f;
     public static final String GAME_OVER_TEXT ="GAME OVER";
     public static final String SCORE_PREF="SCORE_PREF";
     public static final String HIGH_SCORE_KEY="HIGH_SCORE";

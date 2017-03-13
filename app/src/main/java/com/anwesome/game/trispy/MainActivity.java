@@ -31,6 +31,8 @@ public class MainActivity extends InteractiveActivity {
             }
         });
         interactiveView.setMenuBalls(playBall);
+        interactiveView.addHeader("Tap on play");
+        interactiveView.addHeader("to get started");
     }
     public void onBackPressed() {
         if(backCount == 0) {

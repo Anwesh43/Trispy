@@ -43,7 +43,7 @@ public class InstructionController {
                 }
             }
             movingBall = MovingBall.newInstance(0,90,color);
-            movingBall.setEdge(2*w/GameConstants.RING_RADIUS_SCALE+w/GameConstants.LINE_SCALE);
+            movingBall.setEdge((int)(2*w/GameConstants.RING_RADIUS_SCALE+w/GameConstants.LINE_SCALE));
         }
         int deg = 0,color = GameConstants.ROTATING_LINE_COLOR;
         if(store.getMode() == 2) {
@@ -76,14 +76,14 @@ public class InstructionController {
         }
         else if(store.getMode() == 3) {
             ntime++;
-            if(ntime == 10) {
+            if(ntime == 25) {
                 ntime = 0;
                 store.setMode(store.getMode()+1);
             }
         }
         else if(store.getMode() == 4) {
             ntime++;
-            if(ntime == 15) {
+            if(ntime == 3) {
                 isStop = true;
             }
         }
