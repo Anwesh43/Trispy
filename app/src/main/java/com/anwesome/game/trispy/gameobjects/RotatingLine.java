@@ -68,9 +68,6 @@ public class RotatingLine {
         canvas.save();
         canvas.translate(x,y);
         canvas.rotate(rot);
-        paint.setColor(color);
-        paint.setAlpha(alpha);
-        canvas.drawCircle(0,0,r,paint);
         for(int i=0;i<lines;i++) {
             canvas.save();
             canvas.rotate(90*i);
@@ -84,6 +81,9 @@ public class RotatingLine {
             canvas.drawLine(r, 0, x1, 0, paint);
             canvas.restore();
         }
+        paint.setColor(color);
+        paint.setAlpha(alpha);
+        canvas.drawCircle(0,0,r,paint);
         canvas.restore();
     }
     public void move() {

@@ -31,7 +31,7 @@ public class InstructionView extends View {
         controller.drawInstruction(canvas,paint);
         if(!controller.isStop()) {
             try {
-                Thread.sleep(130);
+                Thread.sleep(45);
                 invalidate();
             } catch (Exception ex) {
             }

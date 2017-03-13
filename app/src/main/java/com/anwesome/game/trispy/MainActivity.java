@@ -20,7 +20,7 @@ import com.anwesome.game.trispy.views.InteractiveView;
 public class MainActivity extends InteractiveActivity {
     private int backCount = 0;
     public void createMenus(InteractiveView interactiveView) {
-        MenuBall playBall = MenuBall.newInstance(BitmapFactory.decodeResource(getResources(),R.drawable.play),12, Color.parseColor("#b71c1c"));
+        MenuBall playBall = MenuBall.newInstance(BitmapFactory.decodeResource(getResources(),R.drawable.play),12, GameConstants.MENU_BALL_COLOR);
         playBall.setX(5*w/6);
         playBall.setY(h/2);
         playBall.setNavigationHandler(new MenuBall.NavigationHandler() {

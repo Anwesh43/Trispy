@@ -15,7 +15,7 @@ import com.anwesome.game.trispy.utils.GameNavigationalHandler;
 public class SplashView extends View {
     private int time = 0;
     private RotatingLine rotatingLine;
-    private SplashText splashText = SplashText.newInstance("TRIPSY");
+    private SplashText splashText = SplashText.newInstance("TRISPY");
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Typeface typeface;
     private GameNavigationalHandler navigationalHandler;

@@ -83,7 +83,7 @@ public class InstructionController {
         }
         else if(store.getMode() == 4) {
             ntime++;
-            if(ntime == 5) {
+            if(ntime == 15) {
                 isStop = true;
             }
         }

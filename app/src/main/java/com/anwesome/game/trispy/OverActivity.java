@@ -20,7 +20,7 @@ public class OverActivity extends InteractiveActivity {
         int score = getScoreFromGameActivity();
         SharedPreferences sharedPreferences = getSharedPreferences(GameConstants.SCORE_PREF,0);
         int highScore = sharedPreferences.getInt(GameConstants.HIGH_SCORE_KEY,0);
-        MenuBall restart = MenuBall.newInstance(BitmapFactory.decodeResource(getResources(),R.drawable.restart),12,Color.parseColor("#b71c1c"));
+        MenuBall restart = MenuBall.newInstance(BitmapFactory.decodeResource(getResources(),R.drawable.restart),12,GameConstants.MENU_BALL_COLOR);
         restart.setX(w/2+gap);
         restart.setY(h/2);
         restart.setDeg(0);
@@ -31,7 +31,7 @@ public class OverActivity extends InteractiveActivity {
                 startActivity(intent);
             }
         });
-        MenuBall home = MenuBall.newInstance(BitmapFactory.decodeResource(getResources(),R.drawable.home),12,Color.parseColor("#b71c1c"));
+        MenuBall home = MenuBall.newInstance(BitmapFactory.decodeResource(getResources(),R.drawable.home),12,GameConstants.MENU_BALL_COLOR);
         home.setX(w/2-gap);
         home.setY(h/2);
         home.setDeg(180);
