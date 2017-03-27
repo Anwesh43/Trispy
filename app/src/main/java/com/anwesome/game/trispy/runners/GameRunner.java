@@ -9,6 +9,7 @@ import com.anwesome.game.trispy.gameobjects.MovingBall;
 import com.anwesome.game.trispy.gameobjects.Ring;
 import com.anwesome.game.trispy.gameobjects.RotatingLine;
 import com.anwesome.game.trispy.gameobjects.SoundControl;
+import com.anwesome.game.trispy.utils.BackgroundController;
 import com.anwesome.game.trispy.utils.GameCreateUtil;
 import com.anwesome.game.trispy.utils.GameNavigationalHandler;
 import com.anwesome.game.trispy.utils.GameStateHandler;
@@ -22,10 +23,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class GameRunner implements Runnable{
     private boolean isRunning = false;
-    private int colorIndex = 0;
     private SoundStateHandler soundStateHandler;
     private GameNavigationalHandler navigationHandler;
-
+    private BackgroundController backgroundController = BackgroundController.getInstance();
     public GameNavigationalHandler getNavigationHandler() {
         return navigationHandler;
     }
@@ -73,7 +73,7 @@ public class GameRunner implements Runnable{
                 paint.setTypeface(typeface);
             }
             canvas.drawColor(Color.WHITE);
-            canvas.drawColor(Color.parseColor(GameConstants.GAME_BACK_COLORS[colorIndex]));
+            backgroundController.drawBackground(canvas,paint);
             soundControl.draw(canvas,paint);
             int rotatingLineColor = GameConstants.ROTATING_LINE_COLOR;
             int cDeg = 0;
@@ -109,6 +109,7 @@ public class GameRunner implements Runnable{
                     soundStateHandler.playTick();
                     balls.remove(currentBall);
                     gameStateHandler.addScore();
+                    backgroundController.fetchNextColor();
                     if(gameStateHandler.getScore()%10 == 0) {
                         level++;
                     }
@@ -134,10 +135,6 @@ public class GameRunner implements Runnable{
                 setFirstBallAsCurrent();
             }
             time++;
-            if(time%50 == 0) {
-                colorIndex++;
-                colorIndex%=GameConstants.GAME_BACK_COLORS.length;
-            }
             if(gameStateHandler.shouldRender()) {
                 GameCreateUtil.createMovingBallForLevel(time, level, w, rotatingLine, balls);
             }
