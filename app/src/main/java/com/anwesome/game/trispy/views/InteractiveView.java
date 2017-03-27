@@ -84,7 +84,7 @@ public class InteractiveView extends View{
         }
         if(isAnimating) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(GameConstants.GAME_DELAY+15);
                 invalidate();
             } catch (Exception ex) {
 
