@@ -33,7 +33,7 @@ public class InteractiveView extends View{
     private Typeface typeface = null;
     protected SoundStateHandler soundStateHandler;
     protected SoundControl soundControl;
-    private RotatingLine rotatingLine = RotatingLine.newInstance(1,12,6);
+    private RotatingLine rotatingLine = RotatingLine.newInstance(1,12,6,255);
     public void setMenuBalls(MenuBall... menuBalls) {
         for(MenuBall ball:menuBalls) {
             this.menuBalls.add(ball);

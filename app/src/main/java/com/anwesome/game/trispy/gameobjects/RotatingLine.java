@@ -4,23 +4,24 @@ import android.graphics.*;
 import com.anwesome.game.trispy.GameConstants;
 
 public class RotatingLine {
-    private int alpha = 255;
+    private int alpha = 110;
     private float rot = 270,maxSpeed = GameConstants.ROTATING_SPEED,speed = 0;
     private float lines = 4,radiusScale = GameConstants.RING_RADIUS_SCALE,lineScale = GameConstants.LINE_SCALE;
     private RotatingLine() {
 
     }
-    private RotatingLine(int lines,int radiusScale,int lineScale) {
+    private RotatingLine(int lines,int radiusScale,int lineScale,int alpha) {
         this.lines = lines;
         this.radiusScale = radiusScale;
         this.lineScale = lineScale;
+        this.alpha = alpha;
     }
     public void setAlpha(int alpha) {
         this.alpha = alpha;
     }
     public static RotatingLine newInstance(int... arguments) {
-        if(arguments.length == 3) {
-            return new RotatingLine(arguments[0],arguments[1],arguments[2]);
+        if(arguments.length == 4) {
+            return new RotatingLine(arguments[0],arguments[1],arguments[2],arguments[3]);
         }
         return new RotatingLine();
     }
@@ -82,7 +83,6 @@ public class RotatingLine {
             canvas.restore();
         }
         paint.setColor(color);
-        paint.setAlpha(alpha);
         canvas.drawCircle(0,0,r,paint);
         canvas.restore();
     }
