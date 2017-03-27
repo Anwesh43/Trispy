@@ -1,12 +1,10 @@
 package com.anwesome.game.trispy.runners;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.*;
 import android.view.*;
 import com.anwesome.game.trispy.GameConstants;
-import com.anwesome.game.trispy.gameobjects.MenuBall;
 import com.anwesome.game.trispy.gameobjects.MovingBall;
 import com.anwesome.game.trispy.gameobjects.Ring;
 import com.anwesome.game.trispy.gameobjects.RotatingLine;
@@ -111,7 +109,7 @@ public class GameRunner implements Runnable{
                     soundStateHandler.playTick();
                     balls.remove(currentBall);
                     gameStateHandler.addScore();
-                    if(gameStateHandler.getScore()%3 == 0) {
+                    if(gameStateHandler.getScore()%10 == 0) {
                         level++;
                     }
                     //Code to set first ball of the collection as currentBall
